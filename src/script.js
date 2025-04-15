@@ -54,6 +54,75 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
   
+  // Initialize resizable functionality
+  const initResizable = () => {
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    
+    galleryItems.forEach(item => {
+      // Save original dimensions for reset
+      const originalWidth = item.offsetWidth;
+      const originalHeight = item.offsetHeight;
+      
+      // Add reset button
+      const resetButton = document.createElement('button');
+      resetButton.classList.add('reset-size-button');
+      resetButton.title = 'Reset size';
+      resetButton.innerHTML = `
+        <svg viewBox="0 0 24 24" width="16" height="16">
+          <path d="M4 4h16v16H4z" fill="none" stroke="white" stroke-width="2" />
+        </svg>
+      `;
+      item.appendChild(resetButton);
+      
+      // Initially hide the reset button
+      resetButton.style.display = 'none';
+      
+      // Reset size when clicked
+      resetButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        item.style.width = originalWidth + 'px';
+        item.style.height = originalHeight + 'px';
+        updateIframeSize(item);
+        // Hide the reset button after resetting
+        resetButton.style.display = 'none';
+      });
+      
+      // Function to update iframe size
+      const updateIframeSize = (galleryItem) => {
+        const iframe = galleryItem.querySelector('iframe');
+        const container = galleryItem.querySelector('.iframe-container');
+        const siteInfo = galleryItem.querySelector('.site-info');
+        const resetBtn = galleryItem.querySelector('.reset-size-button');
+        
+        if (iframe && container) {
+          // Calculate the available height for the iframe container
+          // Total height minus the site info section height
+          const availableHeight = galleryItem.offsetHeight - siteInfo.offsetHeight;
+          
+          // Set the container height
+          container.style.height = Math.max(250, availableHeight) + 'px';
+          
+          // Show reset button only if dimensions changed from original
+          if (resetBtn && (galleryItem.offsetWidth !== originalWidth || galleryItem.offsetHeight !== originalHeight)) {
+            resetBtn.style.display = 'flex';
+          } else if (resetBtn) {
+            resetBtn.style.display = 'none';
+          }
+        }
+      };
+      
+      // Add resize observer to adjust iframe content
+      const resizeObserver = new ResizeObserver(() => {
+        updateIframeSize(item);
+      });
+      
+      resizeObserver.observe(item);
+      
+      // Initialize the iframe sizes
+      updateIframeSize(item);
+    });
+  };
+  
   // Initialize animations for gradient background
   const initGradientAnimation = () => {
     const gradientBg = document.querySelector('.gradient-bg');
@@ -175,6 +244,27 @@ document.addEventListener('DOMContentLoaded', () => {
         fill: none;
       }
       
+      .reset-size-button {
+        position: absolute;
+        top: 8px;
+        right: 40px;
+        width: 24px;
+        height: 24px;
+        background: rgba(0, 0, 0, 0.6);
+        border: none;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        transition: background 0.2s ease;
+        cursor: pointer;
+      }
+      
+      .reset-size-button:hover {
+        background: var(--accent-color);
+      }
+      
       .gallery-item {
         opacity: 0;
         transform: translateY(30px);
@@ -199,6 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
   handleIframes();
   initGradientAnimation();
   initScrollReveal();
+  initResizable();
 });
 
 // Add keyboard navigation for accessibility
