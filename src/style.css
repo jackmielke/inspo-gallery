@@ -126,7 +126,7 @@ header p {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 500px), 1fr));
   gap: 30px;
-  padding: 0 5% calc(var(--footer-height) + 40px) 5%;
+  padding: 0 5% 40px 5%;
   margin: 0 auto;
   max-width: 1800px;
 }
@@ -196,8 +196,6 @@ iframe {
 
 /* Footer Styles */
 footer {
-  position: fixed;
-  bottom: 0;
   width: 100%;
   height: var(--footer-height);
   display: flex;
@@ -206,7 +204,7 @@ footer {
   padding: 20px 5%;
   background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
-  z-index: 10;
+  margin-top: 40px;
 }
 
 footer a {
