@@ -124,11 +124,18 @@ header p {
 /* Gallery Layout */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 500px), 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 30px;
   padding: 0 5% 40px 5%;
   margin: 0 auto;
   max-width: 1800px;
+  grid-auto-rows: minmax(400px, auto);
+  align-items: start;
+}
+
+/* Give the gallery some extra padding at the bottom to accommodate resized items */
+main.gallery {
+  padding-bottom: 100px;
 }
 
 .gallery-item {
@@ -137,21 +144,43 @@ header p {
   overflow: hidden;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease;
+  position: relative;
+  resize: both;
+  overflow: auto;
+  min-width: 300px;
+  min-height: 400px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
 }
 
 .gallery-item:hover {
-  transform: translateY(-5px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Resize handle styling */
+.gallery-item::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(135deg, transparent 50%, var(--accent-color) 50%);
+  border-radius: 0 0 3px 0;
+  cursor: nwse-resize;
+  z-index: 10;
 }
 
 .iframe-container {
   width: 100%;
-  height: 300px;
   position: relative;
   overflow: hidden;
   border-radius: 12px 12px 0 0;
   background-color: #fafafa;
+  flex: 1;
+  min-height: 250px;
 }
 
 iframe {
@@ -160,10 +189,17 @@ iframe {
   border: none;
   background-color: white;
   transition: opacity 0.5s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .site-info {
   padding: 20px;
+  flex-shrink: 0;
+  height: auto;
 }
 
 .site-info h2 {
