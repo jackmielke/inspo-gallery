@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,10 +17,40 @@
     
     <header>
         <h1>GET INSPIRED</h1>
-        <p>A curation of remarkable digital experiences</p>
+        <p>A curation of remarkable digital experiences. Click any card to load the site.</p>
+        <div class="theme-toggle">
+            <button id="theme-toggle-btn" aria-label="Toggle dark mode">
+                <svg id="moon-icon" class="theme-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <svg id="sun-icon" class="theme-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
     </header>
     
     <main class="gallery">
+        <!-- First 4 sites (visible initially) -->
+        <div class="gallery-item">
+            <div class="iframe-container">
+                <iframe src="https://kino.ai/" title="Kino AI"></iframe>
+            </div>
+            <div class="site-info">
+                <h2>Kino AI</h2>
+                <p>Clean, modern interface for an AI-powered video production tool</p>
+                <a href="https://kino.ai/" target="_blank" rel="noopener">Visit Site</a>
+            </div>
+        </div>
+        
         <div class="gallery-item">
             <div class="iframe-container">
                 <iframe src="https://jzhao.xyz/" title="Jacky Zhao"></iframe>
@@ -54,119 +84,132 @@
             </div>
         </div>
         
-        <div class="gallery-item">
-            <div class="iframe-container">
-                <iframe src="https://steventenholder.com/" title="Steven Ten Holder"></iframe>
-            </div>
-            <div class="site-info">
-                <h2>Steven Ten Holder</h2>
-                <p>Unique personal branding with outstanding visuals</p>
-                <a href="https://steventenholder.com/" target="_blank" rel="noopener">Visit Site</a>
-            </div>
+        <!-- Load More Button -->
+        <div class="load-more-container">
+            <button id="load-more-btn" class="load-more-btn">
+                <span>Load More Inspiration</span>
+                <svg viewBox="0 0 24 24" width="18" height="18">
+                    <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
         </div>
         
-        <div class="gallery-item">
-            <div class="iframe-container">
-                <iframe src="https://michaeldemar.co/" title="Michael Demar"></iframe>
+        <!-- Hidden sites (loaded on demand) -->
+        <div class="hidden-sites" style="display: none;">
+            <div class="gallery-item">
+                <div class="iframe-container">
+                    <iframe data-src="https://steventenholder.com/" title="Steven Ten Holder"></iframe>
+                </div>
+                <div class="site-info">
+                    <h2>Steven Ten Holder</h2>
+                    <p>Unique personal branding with outstanding visuals</p>
+                    <a href="https://steventenholder.com/" target="_blank" rel="noopener">Visit Site</a>
+                </div>
             </div>
-            <div class="site-info">
-                <h2>Michael Demar</h2>
-                <p>Bold design choices with impressive interactions</p>
-                <a href="https://michaeldemar.co/" target="_blank" rel="noopener">Visit Site</a>
+            
+            <div class="gallery-item">
+                <div class="iframe-container">
+                    <iframe data-src="https://ansonyu.me/" title="Anson Yu"></iframe>
+                </div>
+                <div class="site-info">
+                    <h2>Anson Yu</h2>
+                    <p>Creative developer portfolio with unique presentation</p>
+                    <a href="https://ansonyu.me/" target="_blank" rel="noopener">Visit Site</a>
+                </div>
             </div>
-        </div>
-        
-        <div class="gallery-item">
-            <div class="iframe-container">
-                <iframe src="https://ansonyu.me/" title="Anson Yu"></iframe>
+            
+            <div class="gallery-item">
+                <div class="iframe-container">
+                    <iframe data-src="https://hudzah.com/" title="Hudzah"></iframe>
+                </div>
+                <div class="site-info">
+                    <h2>Hudzah</h2>
+                    <p>Striking personal brand with engaging experience</p>
+                    <a href="https://hudzah.com/" target="_blank" rel="noopener">Visit Site</a>
+                </div>
             </div>
-            <div class="site-info">
-                <h2>Anson Yu</h2>
-                <p>Creative developer portfolio with unique presentation</p>
-                <a href="https://ansonyu.me/" target="_blank" rel="noopener">Visit Site</a>
+            
+            <div class="gallery-item">
+                <div class="iframe-container">
+                    <iframe data-src="https://patrickhuang.co/" title="Patrick Huang"></iframe>
+                </div>
+                <div class="site-info">
+                    <h2>Patrick Huang</h2>
+                    <p>Minimalist portfolio with beautiful animations</p>
+                    <a href="https://patrickhuang.co/" target="_blank" rel="noopener">Visit Site</a>
+                </div>
             </div>
-        </div>
-        
-        <div class="gallery-item">
-            <div class="iframe-container">
-                <iframe src="https://hudzah.com/" title="Hudzah"></iframe>
+            
+            <div class="gallery-item">
+                <div class="iframe-container">
+                    <iframe data-src="https://eriktorenberg.com/" title="Erik Torenberg"></iframe>
+                </div>
+                <div class="site-info">
+                    <h2>Erik Torenberg</h2>
+                    <p>Clean, content-focused design with elegant typography</p>
+                    <a href="https://eriktorenberg.com/" target="_blank" rel="noopener">Visit Site</a>
+                </div>
             </div>
-            <div class="site-info">
-                <h2>Hudzah</h2>
-                <p>Striking personal brand with engaging experience</p>
-                <a href="https://hudzah.com/" target="_blank" rel="noopener">Visit Site</a>
+            
+            <div class="gallery-item">
+                <div class="iframe-container">
+                    <iframe data-src="https://www.zoeloefstok.com/" title="Zoë Loefstok"></iframe>
+                </div>
+                <div class="site-info">
+                    <h2>Zoë Loefstok</h2>
+                    <p>Spiritual and mindful design with beautiful transitions</p>
+                    <a href="https://www.zoeloefstok.com/" target="_blank" rel="noopener">Visit Site</a>
+                </div>
             </div>
-        </div>
-        
-        <div class="gallery-item">
-            <div class="iframe-container">
-                <iframe src="https://patrickhuang.co/" title="Patrick Huang"></iframe>
+            
+            <div class="gallery-item">
+                <div class="iframe-container">
+                    <iframe data-src="https://kelvinzhang.com/" title="Kelvin Zhang"></iframe>
+                </div>
+                <div class="site-info">
+                    <h2>Kelvin Zhang</h2>
+                    <p>Modern portfolio with innovative scrolling experience</p>
+                    <a href="https://kelvinzhang.com/" target="_blank" rel="noopener">Visit Site</a>
+                </div>
             </div>
-            <div class="site-info">
-                <h2>Patrick Huang</h2>
-                <p>Minimalist portfolio with beautiful animations</p>
-                <a href="https://patrickhuang.co/" target="_blank" rel="noopener">Visit Site</a>
+            
+            <div class="gallery-item">
+                <div class="iframe-container">
+                    <iframe data-src="https://socratica.info/" title="Socratica"></iframe>
+                </div>
+                <div class="site-info">
+                    <h2>Socratica</h2>
+                    <p>Unique information display with innovative design</p>
+                    <a href="https://socratica.info/" target="_blank" rel="noopener">Visit Site</a>
+                </div>
             </div>
-        </div>
-        
-        <div class="gallery-item">
-            <div class="iframe-container">
-                <iframe src="https://eriktorenberg.com/" title="Erik Torenberg"></iframe>
+            
+            <div class="gallery-item">
+                <div class="iframe-container">
+                    <iframe data-src="https://donaldjewkes.com/" title="Donald Jewkes"></iframe>
+                </div>
+                <div class="site-info">
+                    <h2>Donald Jewkes</h2>
+                    <p>Creative layout with innovative project showcasing</p>
+                    <a href="https://donaldjewkes.com/" target="_blank" rel="noopener">Visit Site</a>
+                </div>
             </div>
-            <div class="site-info">
-                <h2>Erik Torenberg</h2>
-                <p>Clean, content-focused design with elegant typography</p>
-                <a href="https://eriktorenberg.com/" target="_blank" rel="noopener">Visit Site</a>
-            </div>
-        </div>
-        
-        <div class="gallery-item">
-            <div class="iframe-container">
-                <iframe src="https://www.zoeloefstok.com/" title="Zoë Loefstok"></iframe>
-            </div>
-            <div class="site-info">
-                <h2>Zoë Loefstok</h2>
-                <p>Spiritual and mindful design with beautiful transitions</p>
-                <a href="https://www.zoeloefstok.com/" target="_blank" rel="noopener">Visit Site</a>
-            </div>
-        </div>
-        
-        <div class="gallery-item">
-            <div class="iframe-container">
-                <iframe src="https://kelvinzhang.com/" title="Kelvin Zhang"></iframe>
-            </div>
-            <div class="site-info">
-                <h2>Kelvin Zhang</h2>
-                <p>Modern portfolio with innovative scrolling experience</p>
-                <a href="https://kelvinzhang.com/" target="_blank" rel="noopener">Visit Site</a>
-            </div>
-        </div>
-        
-        <div class="gallery-item">
-            <div class="iframe-container">
-                <iframe src="https://socratica.info/" title="Socratica"></iframe>
-            </div>
-            <div class="site-info">
-                <h2>Socratica</h2>
-                <p>Unique information display with innovative design</p>
-                <a href="https://socratica.info/" target="_blank" rel="noopener">Visit Site</a>
-            </div>
-        </div>
-        
-        <div class="gallery-item">
-            <div class="iframe-container">
-                <iframe src="https://donaldjewkes.com/" title="Donald Jewkes"></iframe>
-            </div>
-            <div class="site-info">
-                <h2>Donald Jewkes</h2>
-                <p>Creative layout with innovative project showcasing</p>
-                <a href="https://donaldjewkes.com/" target="_blank" rel="noopener">Visit Site</a>
+            
+            <div class="gallery-item">
+                <div class="iframe-container">
+                    <iframe data-src="https://michaeldemar.co/" title="Michael Demar"></iframe>
+                </div>
+                <div class="site-info">
+                    <h2>Michael Demar</h2>
+                    <p>Beautiful and elegant portfolio with sophisticated aesthetics</p>
+                    <a href="https://michaeldemar.co/" target="_blank" rel="noopener">Visit Site</a>
+                </div>
             </div>
         </div>
     </main>
     
     <footer>
-        <p>Curated by <a href="https://jackmielke.com" target="_blank">Jack Mielke</a></p>
+        <p>Curated by <a href="https://jackmielke.com" target="_blank">Jack Mielke</a> | Press 'T' to toggle dark mode</p>
     </footer>
     
     <script src="script.js"></script>

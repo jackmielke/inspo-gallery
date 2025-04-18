@@ -1,4 +1,91 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Website preview data - screenshots and info
+  const sitePreviewData = {
+    'kino.ai': {
+      image: 'https://i.imgur.com/EbTFrht.jpg',
+      color: '#3da8e0'
+    },
+    'jzhao.xyz': {
+      image: 'https://i.imgur.com/SLPpz90.jpg',
+      color: '#eeeeee'
+    },
+    'roadtrip.guilhermelucas.com': {
+      image: 'https://i.imgur.com/2rkhJ2w.jpg',
+      color: '#ffd700'
+    },
+    'bruno-simon.com': {
+      image: 'https://i.imgur.com/BX0Qcqm.jpg',
+      color: '#222222'
+    },
+    'steventenholder.com': {
+      image: 'https://i.imgur.com/zzb9M4x.jpg',
+      color: '#ff4470'
+    },
+    'michaeldemar.co': {
+      image: 'https://i.imgur.com/YTnkCZI.jpg',
+      color: '#333333'
+    },
+    'ansonyu.me': {
+      image: 'https://i.imgur.com/EHs3ULp.jpg',
+      color: '#444444'
+    },
+    'hudzah.com': {
+      image: 'https://i.imgur.com/Nxh0YPY.jpg',
+      color: '#ff5900'
+    },
+    'patrickhuang.co': {
+      image: 'https://i.imgur.com/ky1pMJ7.jpg',
+      color: '#f5f5f5'
+    },
+    'eriktorenberg.com': {
+      image: 'https://i.imgur.com/x7BdQQ7.jpg',
+      color: '#f8f8f8'
+    },
+    'zoeloefstok.com': {
+      image: 'https://i.imgur.com/fXR8OwS.jpg',
+      color: '#d4c1b4'
+    },
+    'kelvinzhang.com': {
+      image: 'https://i.imgur.com/m0PeHPt.jpg', 
+      color: '#222222'
+    },
+    'socratica.info': {
+      image: 'https://i.imgur.com/q1QqH1C.jpg',
+      color: '#121212'
+    },
+    'donaldjewkes.com': {
+      image: 'https://i.imgur.com/lY9i1eZ.jpg',
+      color: '#eeeeee'
+    }
+  };
+
+  // Theme toggle functionality
+  const initThemeToggle = () => {
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    
+    // Check for saved theme preference or use preferred color scheme
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    // Set initial theme
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('theme', 'light');
+    }
+    
+    // Toggle theme on button click
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
+  };
+
   // Fade in elements when page loads
   const fadeInElements = () => {
     const header = document.querySelector('header');
@@ -10,20 +97,124 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => footer.classList.add('visible'), 500);
   };
   
-  // Handle iframe loading
+  // Handle load more button functionality
+  const initLoadMore = () => {
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    const hiddenSites = document.querySelector('.hidden-sites');
+    
+    if (!loadMoreBtn || !hiddenSites) return;
+    
+    loadMoreBtn.addEventListener('click', () => {
+      // Add loading state
+      loadMoreBtn.classList.add('loading');
+      loadMoreBtn.innerHTML = `
+        <span>Loading...</span>
+        <svg viewBox="0 0 24 24" width="18" height="18">
+          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      `;
+      
+      // Show the hidden sites with a fade-in effect
+      setTimeout(() => {
+        // Display the hidden container
+        hiddenSites.style.display = 'grid';
+        
+        // Get all hidden iframes
+        const hiddenIframes = hiddenSites.querySelectorAll('iframe[data-src]');
+        
+        // Load each iframe with a slight delay between them
+        hiddenIframes.forEach((iframe, index) => {
+          const container = iframe.closest('.iframe-container');
+          
+          // Add loading indicator
+          const loader = document.createElement('div');
+          loader.classList.add('loader');
+          container.appendChild(loader);
+          
+          // Load iframe after a staggered delay
+          setTimeout(() => {
+            // Set the actual src from data-src
+            iframe.src = iframe.getAttribute('data-src');
+            
+            // Set iframe attributes for better loading
+            iframe.loading = 'lazy';
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            
+            // Handle iframe load event
+            iframe.addEventListener('load', () => {
+              loader.style.opacity = '0';
+              iframe.style.opacity = '1';
+              setTimeout(() => {
+                if (loader.parentNode) loader.parentNode.removeChild(loader);
+              }, 500);
+            });
+            
+            // Handle iframe error
+            iframe.addEventListener('error', () => {
+              loader.innerHTML = 'Failed to load site preview';
+              loader.classList.add('error');
+            });
+            
+            // Add expand button
+            const expandButton = document.createElement('a');
+            expandButton.href = iframe.getAttribute('data-src');
+            expandButton.target = '_blank';
+            expandButton.rel = 'noopener noreferrer';
+            expandButton.classList.add('expand-button');
+            expandButton.title = 'Open in new window';
+            expandButton.innerHTML = `
+              <svg class="expand-icon" viewBox="0 0 24 24">
+                <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+              </svg>
+            `;
+            container.appendChild(expandButton);
+          }, index * 150); // Stagger loading
+        });
+        
+        // Create a reveal effect for the gallery items
+        const galleryItems = hiddenSites.querySelectorAll('.gallery-item');
+        galleryItems.forEach((item, index) => {
+          item.style.opacity = '0';
+          item.style.transform = 'translateY(30px)';
+          
+          setTimeout(() => {
+            item.style.transition = 'opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease';
+            item.style.opacity = '1';
+            item.style.transform = 'translateY(0)';
+          }, 100 + index * 100);
+        });
+        
+        // Hide the button with a fade-out effect
+        setTimeout(() => {
+          loadMoreBtn.style.opacity = '0';
+          loadMoreBtn.style.transform = 'translateY(20px)';
+          setTimeout(() => {
+            loadMoreBtn.parentNode.style.display = 'none';
+          }, 500);
+        }, 500);
+      }, 800); // Add a delay for effect
+    });
+  };
+  
+  // Handle iframe loading - only for initial sites
   const handleIframes = () => {
-    const iframes = document.querySelectorAll('iframe');
-    const containers = document.querySelectorAll('.iframe-container');
+    // Only handle the first 4 iframes that are initially visible
+    const visibleIframes = document.querySelectorAll('.gallery > .gallery-item:not(.hidden-sites .gallery-item) iframe');
+    const containers = document.querySelectorAll('.gallery > .gallery-item:not(.hidden-sites .gallery-item) .iframe-container');
     
     containers.forEach((container, index) => {
+      if (index >= visibleIframes.length) return;
+      
       // Add loading indicator
       const loader = document.createElement('div');
       loader.classList.add('loader');
       container.appendChild(loader);
       
+      const iframe = visibleIframes[index];
+      
       // Add small expand button in the corner
       const expandButton = document.createElement('a');
-      expandButton.href = iframes[index].src;
+      expandButton.href = iframe.src;
       expandButton.target = '_blank';
       expandButton.rel = 'noopener noreferrer';
       expandButton.classList.add('expand-button');
@@ -35,19 +226,21 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       container.appendChild(expandButton);
       
-      // Set iframe attributes for better loading - just like in portfolio
-      iframes[index].loading = 'lazy';
-      iframes[index].allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      // Set iframe attributes for better loading
+      iframe.loading = 'lazy';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
       
       // Handle iframe load event
-      iframes[index].addEventListener('load', () => {
+      iframe.addEventListener('load', () => {
         loader.style.opacity = '0';
-        setTimeout(() => loader.remove(), 500);
-        iframes[index].style.opacity = '1';
+        setTimeout(() => {
+          if (loader.parentNode) loader.parentNode.removeChild(loader);
+        }, 500);
+        iframe.style.opacity = '1';
       });
       
       // Handle iframe error
-      iframes[index].addEventListener('error', () => {
+      iframe.addEventListener('error', () => {
         loader.innerHTML = 'Failed to load site preview';
         loader.classList.add('error');
       });
@@ -138,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Add scroll reveal animations
   const initScrollReveal = () => {
-    const galleryItems = document.querySelectorAll('.gallery-item');
+    const galleryItems = document.querySelectorAll('.gallery > .gallery-item:not(.hidden-sites .gallery-item)');
     
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -285,16 +478,31 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Initialize everything
   addStyles();
+  initThemeToggle();
   fadeInElements();
   handleIframes();
   initGradientAnimation();
   initScrollReveal();
   initResizable();
+  initLoadMore();  // Initialize the load more functionality
 });
 
 // Add keyboard navigation for accessibility
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     // Implement fullscreen functionality if needed
+  }
+  
+  // Toggle theme with 'T' key for accessibility
+  if (e.key === 't' || e.key === 'T') {
+    document.getElementById('theme-toggle-btn').click();
+  }
+  
+  // Load more sites with 'L' key
+  if (e.key === 'l' || e.key === 'L') {
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    if (loadMoreBtn && window.getComputedStyle(loadMoreBtn).display !== 'none') {
+      loadMoreBtn.click();
+    }
   }
 }); 
