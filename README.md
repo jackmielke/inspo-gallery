@@ -1,6 +1,6 @@
 # Inspo Gallery
 
-An interactive gallery of inspiring websites and digital experiences. Built with vanilla HTML, CSS, and JavaScript.
+An interactive gallery of inspiring websites and digital experiences. Built with vanilla HTML, CSS, and JavaScript. Live site: inspo.jackmielke.com.
 
 ![Inspo Gallery Screenshot](screenshot.png)
 
