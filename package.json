@@ -1,0 +1,15 @@
+{
+  "name": "inspo-gallery",
+  "version": "1.0.0",
+  "description": "A curation of remarkable digital experiences",
+  "main": "src/index.html",
+  "scripts": {
+    "start": "npx serve src",
+    "build": "echo 'No build needed - static site'"
+  },
+  "author": "Jack Mielke",
+  "license": "MIT",
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+} 
